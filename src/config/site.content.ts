@@ -2,86 +2,86 @@ import type { TaskKey } from '@/lib/site-config'
 
 export const siteContent = {
   navbar: {
-    tagline: 'Independent reading platform',
+    tagline: 'Independent editorial journal',
   },
   footer: {
-    tagline: 'Stories, resources, and discoverable posts',
+    tagline: 'Essays, notes, and a searchable archive',
   },
   hero: {
-    badge: 'Latest stories and visuals',
-    title: ['A thoughtful home for', 'stories, visuals, and discovery.'],
+    badge: 'Latest issue',
+    title: ['A publication built for', 'essays, notes, and deliberate reading.'],
     description:
-      'Explore fresh articles, image-led posts, and discoverable content across the platform through a calmer and clearer browsing experience.',
+      'Discover crafted articles, commentary, and long-form pieces through a warmer, reading-first editorial experience.',
     primaryCta: {
-      label: 'Read latest stories',
+      label: 'Read the issue',
       href: '/articles',
     },
     secondaryCta: {
-      label: 'Explore visuals',
-      href: '/images',
+      label: 'Search the archive',
+      href: '/search',
     },
-    searchPlaceholder: 'Search stories, visuals, listings, and more',
-    focusLabel: 'Focus',
-    featureCardBadge: 'latest cover rotation',
-    featureCardTitle: 'Latest posts shape the visual identity of the homepage.',
+    searchPlaceholder: 'Search essays, notes, and archive entries',
+    focusLabel: 'Issue focus',
+    featureCardBadge: 'cover story',
+    featureCardTitle: 'Lead stories define the homepage like a current issue, not a generic feed.',
     featureCardDescription:
-      'Recent images and stories stay at the center of the experience without changing any core platform behavior.',
+      'The newest articles stay central to discovery while preserving every underlying route and publishing behavior.',
   },
   home: {
     metadata: {
-      title: 'Stories, visuals, and discoverable content',
+      title: 'An independent journal for essays and long-form reading',
       description:
-        'Explore articles, images, listings, and curated posts through a cleaner reading-first experience.',
-      openGraphTitle: 'Stories, visuals, and discoverable content',
+        'Read thoughtful articles, commentary, and slower long-form work through a distinctive editorial publication shell.',
+      openGraphTitle: 'An independent journal for essays and long-form reading',
       openGraphDescription:
-        'Discover articles, visual posts, and connected content through a calmer reading-first experience.',
-      keywords: ['story platform', 'article site', 'visual content', 'content discovery'],
+        'Discover essays, cultural notes, and article-led publishing through a warmer, premium reading-first design.',
+      keywords: ['independent journal', 'article publication', 'editorial essays', 'long-form reading'],
     },
-    introBadge: 'About the platform',
-    introTitle: 'Built for reading, browsing, and connecting different kinds of content.',
+    introBadge: 'About the publication',
+    introTitle: 'Built to feel like a journal issue instead of a recycled multi-task template.',
     introParagraphs: [
-      'This site brings together article-style reading, visual browsing, and structured discovery so visitors can move naturally between different content types.',
-      'Instead of separating stories, visuals, and supporting resources into disconnected surfaces, the platform keeps them connected in one place with consistent navigation and easier exploration.',
-      'Whether someone starts with a story, an image-led post, a listing, or a resource page, they can keep discovering related content without friction.',
+      'This site centers article publishing first, with stronger hierarchy for cover stories, cleaner archive discovery, and a calmer reading rhythm across the full experience.',
+      'Supporting routes still exist beneath the same system, but the homepage, navigation, and major discovery surfaces now behave like a publication rather than a generic all-tasks product grid.',
+      'Visitors can begin with a lead essay, move into the archive, and continue into lower-emphasis routes only when they want to explore beyond the main editorial lane.',
     ],
     sideBadge: 'At a glance',
     sidePoints: [
-      'Reading-first homepage with stronger emphasis on stories and imagery.',
-      'Connected sections for articles, visuals, listings, and supporting resources.',
-      'Cleaner browsing rhythm designed to make exploration feel easier.',
-      'Lightweight interactions that keep the experience fast and readable.',
+      'Homepage led by cover-story composition and issue-style support columns.',
+      'Navbar and CTA surfaces prioritize articles over every other task.',
+      'Archive routes remain accessible without competing with the primary editorial focus.',
+      'Lighter motion and stronger typography keep the experience fast and readable.',
     ],
     primaryLink: {
       label: 'Browse articles',
       href: '/articles',
     },
     secondaryLink: {
-      label: 'See visuals',
-      href: '/images',
+      label: 'Search archive',
+      href: '/search',
     },
   },
   cta: {
-    badge: 'Start exploring',
-    title: 'Explore articles, visuals, and resources through one connected experience.',
+    badge: 'Keep reading',
+    title: 'Move from the current issue into the full archive without losing the editorial feel.',
     description:
-      'Move between articles, image-led posts, listings, and resources through one clearer and more connected visual system.',
+      'Read the newest pieces, search older work, and keep every route accessible through a publication-first visual system.',
     primaryCta: {
-      label: 'Get Started Free',
-      href: '/register',
+      label: 'Open Articles',
+      href: '/articles',
     },
     secondaryCta: {
-      label: 'Contact Sales',
-      href: '/contact',
+      label: 'Search Archive',
+      href: '/search',
     },
   },
-  taskSectionHeading: 'Latest {label}',
-  taskSectionDescriptionSuffix: 'Browse the newest posts in this section.',
+  taskSectionHeading: 'Latest from {label}',
+  taskSectionDescriptionSuffix: 'Browse the newest work in this archive.',
 } as const
 
 export const taskPageMetadata: Record<Exclude<TaskKey, 'comment' | 'org' | 'social'>, { title: string; description: string }> = {
   article: {
-    title: 'Articles and stories',
-    description: 'Read articles, stories, guides, and long-form posts across topics and interests.',
+    title: 'Articles and essays',
+    description: 'Read essays, commentary, features, and long-form posts in a publication-first archive.',
   },
   listing: {
     title: 'Listings and discoverable pages',
@@ -127,17 +127,13 @@ export const taskIntroCopy: Record<
     ],
   },
   article: {
-    title: 'Articles, stories, and long-form reading',
+    title: 'Articles, essays, and long-form reading',
     paragraphs: [
-      'This section is built for stories, explainers, guides, and long-form reading across topics and interests.',
-      'Articles connect with listings, images, resources, and other content types so deeper reading can lead naturally into related discovery.',
-      'Use this section to browse thoughtful posts, revisit useful writing, and move into supporting content when you want more context.',
+      'This section is built for essays, reported notes, commentary, and longer reading designed to feel like a deliberate publication archive.',
+      'The visual system gives stories more room to breathe, with clearer hierarchy, warmer contrast, and less template repetition than the broader base repo.',
+      'Use this archive to move between recent pieces and older work while keeping supporting routes available only when they are actually useful.',
     ],
-    links: [
-      { label: 'Explore listings', href: '/listings' },
-      { label: 'Open images', href: '/images' },
-      { label: 'Browse resources', href: '/pdf' },
-    ],
+    links: [],
   },
   classified: {
     title: 'Classifieds, offers, and timely updates',

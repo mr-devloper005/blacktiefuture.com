@@ -245,14 +245,14 @@ export function ArticleComments({ slug }: { slug: string }) {
 
   return (
     <section className="mt-12" id="comments">
-      <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+      <div className="flex items-center gap-2 text-sm font-semibold text-[#241612]">
         <MessageSquare className="h-4 w-4" />
         Comments
       </div>
 
-      <form onSubmit={handleSubmit} className="mt-6 rounded-2xl border border-border bg-white p-5 shadow-sm">
+      <form onSubmit={handleSubmit} className="mt-6 rounded-[1.8rem] border border-[#d7c4af] bg-[rgba(255,251,245,0.92)] p-5 shadow-[0_18px_52px_rgba(69,38,20,0.08)]">
         <div className="space-y-2">
-          <label htmlFor="comment-body" className="text-sm font-medium text-foreground">
+          <label htmlFor="comment-body" className="text-sm font-medium text-[#241612]">
             Add a comment
           </label>
           <Textarea
@@ -273,7 +273,7 @@ export function ArticleComments({ slug }: { slug: string }) {
                   ? "bg-destructive/10 text-destructive"
                   : remainingToday <= 3
                     ? "bg-amber-100 text-amber-700"
-                    : "bg-primary/10 text-primary"
+                    : "bg-[rgba(216,135,77,0.14)] text-[#8c5738]"
               }`}
             >
               {limitReached
@@ -302,12 +302,12 @@ export function ArticleComments({ slug }: { slug: string }) {
                 key={comment.id}
                 id={`comment-${comment.id}`}
                 className={`rounded-2xl border p-4 ${
-                  isHighlighted ? "border-primary/50 bg-primary/5" : "border-border bg-white"
+                  isHighlighted ? "border-[#d08a58] bg-[rgba(216,135,77,0.08)]" : "border-[#d7c4af] bg-[rgba(255,251,245,0.92)]"
                 }`}
               >
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <p className="text-sm font-semibold text-foreground">{comment.authorName}</p>
+                    <p className="text-sm font-semibold text-[#241612]">{comment.authorName}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <p className="text-xs text-muted-foreground">
@@ -317,7 +317,7 @@ export function ArticleComments({ slug }: { slug: string }) {
                       <button
                         type="button"
                         onClick={() => handleDeleteLocalComment(comment.id)}
-                        className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground transition hover:border-destructive/30 hover:bg-destructive/5 hover:text-destructive"
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#d7c4af] text-[#7c6658] transition hover:border-destructive/30 hover:bg-destructive/5 hover:text-destructive"
                         aria-label="Delete local comment"
                       >
                         <Trash2 className="h-4 w-4" />
@@ -327,14 +327,14 @@ export function ArticleComments({ slug }: { slug: string }) {
                 </div>
                 <RichContent
                   html={formatRichHtml(comment.body, "Comment added.")}
-                  className="mt-2 text-sm text-muted-foreground prose-sm prose-h2:text-xl prose-h3:text-lg"
+                  className="mt-2 text-sm text-[#6f594c] prose-sm prose-h2:text-xl prose-h3:text-lg"
                 />
               </div>
             );
           })}
         </div>
       ) : (
-        <div className="mt-6 rounded-2xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+        <div className="mt-6 rounded-[1.6rem] border border-dashed border-[#d7c4af] bg-[rgba(255,251,245,0.76)] p-6 text-center text-sm text-[#6f594c]">
           No comments yet.
         </div>
       )}
