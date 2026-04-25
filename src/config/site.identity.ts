@@ -1,10 +1,10 @@
 export const siteIdentity = {
   code: process.env.NEXT_PUBLIC_SITE_CODE || 'bwal2rxe11',
   name: process.env.NEXT_PUBLIC_SITE_NAME || 'Blacktiefuture',
-  tagline: process.env.NEXT_PUBLIC_SITE_TAGLINE || 'Article platform',
+  tagline: process.env.NEXT_PUBLIC_SITE_TAGLINE || 'Independent editorial journal',
   description:
     process.env.NEXT_PUBLIC_SITE_DESCRIPTION ||
-    'An article-led publishing platform for insights, stories, guides, and long-form discovery.',
+    'An article-led editorial journal for essays, cultural notes, commentary, and long-form reading.',
   domain: process.env.NEXT_PUBLIC_SITE_DOMAIN || 'blacktiefuture.com',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://blacktiefuture.com',
   ogImage: process.env.NEXT_PUBLIC_SITE_OG_IMAGE || '/og-default.png',
