@@ -19,6 +19,7 @@ import { getFactoryState } from "@/design/factory/get-factory-state";
 import { getProductKind } from "@/design/factory/get-product-kind";
 import { DirectoryTaskDetailPage } from "@/design/products/directory/task-detail-page";
 import { TASK_DETAIL_PAGE_OVERRIDE_ENABLED, TaskDetailPageOverride } from "@/overrides/task-detail-page";
+import { editorialTheme } from "@/overrides/editorial-ui";
 
 type PostContent = {
   category?: string;
@@ -61,6 +62,11 @@ const formatArticleHtml = (content: PostContent, post: SitePost) => {
     "";
 
   return formatRichHtml(raw, "Details coming soon.");
+};
+
+const getReadingTimeFromHtml = (value: string) => {
+  const words = value.replace(/<[^>]*>/g, " ").split(/\s+/).filter(Boolean).length;
+  return `${Math.max(3, Math.ceil(words / 180) || 3)} min read`;
 };
 
 const getImageUrls = (post: SitePost, content: PostContent) => {
@@ -248,13 +254,13 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className={`min-h-screen ${isArticle ? 'bg-[linear-gradient(180deg,#17100f_0%,#251917_18%,#f5ecdf_18.05%,#f5ecdf_100%)]' : 'bg-background'}`}>
       <NavbarShell />
       <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <SchemaJsonLd data={schemaPayload} />
         <Link
           href={taskConfig?.route || "/"}
-          className="mb-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          className={`mb-6 inline-flex items-center text-sm ${isArticle ? 'text-[#d4bca9] hover:text-[#fff2e2]' : 'text-muted-foreground hover:text-foreground'}`}
         >
           ← Back to {taskConfig?.label || "posts"}
         </Link>
@@ -268,31 +274,36 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
           <div className={cn(isClassified ? "space-y-8" : "")}>
             {isArticle ? (
               <div className="mx-auto w-full max-w-4xl space-y-6">
-                <h1 className="text-4xl font-semibold leading-tight text-foreground">
-                  {post.title}
-                </h1>
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
-                  <span>By {articleAuthor}</span>
-                  {articleDate ? <span>{articleDate}</span> : null}
-                  <Badge variant="secondary" className="inline-flex items-center gap-1">
-                    <Tag className="h-3.5 w-3.5" />
-                    {category}
-                  </Badge>
-                </div>
-                {postTags.length ? (
-                  <div className="flex flex-wrap gap-2">
-                    {postTags.map((tag) => (
-                      <Badge key={tag} variant="outline">
-                        {tag}
-                      </Badge>
-                    ))}
+                <div className={`rounded-[2.1rem] p-7 text-white sm:p-9 ${editorialTheme.darkPanel}`}>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className={editorialTheme.badge}>{category}</span>
+                    <span className="rounded-full border border-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#d4bca9]">
+                      {getReadingTimeFromHtml(articleHtml)}
+                    </span>
                   </div>
-                ) : null}
-                {articleSummary ? (
-                  <p className="text-base leading-7 text-muted-foreground">{articleSummary}</p>
-                ) : null}
+                  <h1 className="mt-5 text-4xl font-semibold leading-tight tracking-[-0.05em] text-[#fff2e2] sm:text-5xl">
+                    {post.title}
+                  </h1>
+                  <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-[#d4bca9]">
+                    <span>By {articleAuthor}</span>
+                    {articleDate ? <span>{articleDate}</span> : null}
+                  </div>
+                  {postTags.length ? (
+                    <div className="mt-5 flex flex-wrap gap-2">
+                      {postTags.map((tag) => (
+                        <Badge key={tag} className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-[11px] uppercase tracking-[0.16em] text-[#f1dfcf]">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  ) : null}
+                  {articleSummary ? (
+                    <p className="mt-6 max-w-3xl text-base leading-8 text-[#efe1d1]">{articleSummary}</p>
+                  ) : null}
+                </div>
+
                 {images[0] ? (
-                  <div className="relative aspect-[16/9] w-full overflow-hidden rounded-3xl border border-border bg-muted">
+                  <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[2rem] border border-[#3a2a24] bg-[#1b1210] shadow-[0_24px_80px_rgba(0,0,0,0.22)]">
                     <ContentImage
                       src={images[0]}
                       alt={`${post.title} featured image`}
@@ -303,7 +314,18 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
                     />
                   </div>
                 ) : null}
-                <RichContent html={articleHtml} className="leading-8 prose-p:my-6 prose-h2:my-8 prose-h3:my-6 prose-ul:my-6" />
+
+                <div className={`rounded-[2rem] p-6 sm:p-8 ${editorialTheme.paperPanel}`}>
+                  <div className="mb-6 flex flex-wrap items-center gap-3 text-sm text-[#765e50]">
+                    <span className="font-medium">{articleAuthor}</span>
+                    {articleDate ? <span>{articleDate}</span> : null}
+                    <Badge variant="secondary" className="inline-flex items-center gap-1 rounded-full border-0 bg-[#f3e5d7] text-[#7c4f36] shadow-none">
+                      <Tag className="h-3.5 w-3.5" />
+                      {category}
+                    </Badge>
+                  </div>
+                  <RichContent html={articleHtml} className="leading-8 prose-p:my-6 prose-h2:my-8 prose-h3:my-6 prose-ul:my-6" />
+                </div>
                 <ArticleComments slug={post.slug} />
               </div>
             ) : null}
@@ -479,13 +501,13 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
           {related.length ? (
             <>
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-foreground">
+              <h2 className={`text-xl font-semibold ${isArticle ? 'text-[#241612]' : 'text-foreground'}`}>
                 More in {category}
               </h2>
               {taskConfig?.route && (
                 <Link
                   href={taskConfig.route}
-                  className="text-sm text-muted-foreground hover:text-foreground"
+                  className={`text-sm ${isArticle ? 'text-[#7a6457] hover:text-[#241612]' : 'text-muted-foreground hover:text-foreground'}`}
                 >
                   View all
                 </Link>
@@ -502,7 +524,7 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
             </div>
             </>
           ) : null}
-          <nav className="mt-6 rounded-2xl border border-border bg-card/60 p-4">
+          <nav className={`mt-6 rounded-2xl p-4 ${isArticle ? `${editorialTheme.paperPanel}` : 'border border-border bg-card/60'}`}>
             <p className="text-sm font-semibold text-foreground">Related links</p>
             <ul className="mt-2 space-y-2 text-sm">
               {related.map((item) => (

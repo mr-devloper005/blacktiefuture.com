@@ -13,8 +13,11 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/lib/auth-context";
 import { CATEGORY_OPTIONS } from "@/lib/categories";
+import { cn } from "@/lib/utils";
 import { SITE_CONFIG, type TaskKey } from "@/lib/site-config";
 import { addLocalPost } from "@/lib/local-posts";
+import { editorialTheme } from "@/overrides/editorial-ui";
+import { Footer } from "@/components/shared/footer";
 
 type Field = {
   key: string;
@@ -71,7 +74,7 @@ const FORM_CONFIG: Record<TaskKey, { title: string; description: string; fields:
   },
   article: {
     title: "Create Article",
-    description: "Write a local-only article post.",
+    description: "Compose a long-form piece for the archive. HTML is allowed in the body; drafts save in your browser after sign-in.",
     fields: [
       { key: "title", label: "Article title", type: "text", required: true },
       { key: "summary", label: "Short summary", type: "textarea", required: true },
@@ -170,6 +173,8 @@ export default function CreateTaskPage() {
   const router = useRouter();
   const params = useParams();
   const taskKey = params?.task as TaskKey;
+  const isArticle = taskKey === "article";
+  const backHref = isArticle ? "/articles" : "/";
 
   const taskConfig = useMemo(
     () => SITE_CONFIG.tasks.find((task) => task.key === taskKey && task.enabled),
@@ -179,6 +184,14 @@ export default function CreateTaskPage() {
 
   const [values, setValues] = useState<Record<string, string>>({});
   const [uploadingPdf, setUploadingPdf] = useState(false);
+
+  const fieldClass = (extra?: string) =>
+    cn(
+      isArticle
+        ? "border border-[#d9c5b0] bg-white text-[#241612] focus-visible:ring-2 focus-visible:ring-[#d8874d]/30"
+        : "border-2 border-slate-200 bg-white focus-visible:ring-2 focus-visible:ring-primary/30",
+      extra
+    );
 
   if (!taskConfig || !formConfig) {
     return (
@@ -271,46 +284,82 @@ export default function CreateTaskPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className={isArticle ? `min-h-screen ${editorialTheme.backdrop}` : "min-h-screen bg-background"}>
       <NavbarShell />
-      <main className="mx-auto max-w-4xl px-4 py-12">
-        <div className="mb-8 flex items-center gap-3">
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="/">
-              <ArrowLeft className="h-5 w-5" />
-            </Link>
-          </Button>
-          <div>
-            <h1 className="text-2xl font-semibold text-foreground">{formConfig.title}</h1>
-            <p className="text-sm text-muted-foreground">{formConfig.description}</p>
+      {isArticle ? (
+        <div className={editorialTheme.masthead}>
+          <div className="mx-auto flex max-w-4xl items-center gap-3 px-4 py-6 sm:px-6">
+            <Button variant="ghost" size="icon" asChild className="shrink-0 text-[#f5ead7] hover:bg-white/10">
+              <Link href={backHref} aria-label="Back to articles">
+                <ArrowLeft className="h-5 w-5" />
+              </Link>
+            </Button>
+            <div>
+              <h1 className="text-2xl font-semibold tracking-tight text-[#fff1e1]">{formConfig.title}</h1>
+              <p className="mt-1 text-sm text-[#d5c1af]">{formConfig.description}</p>
+            </div>
           </div>
         </div>
+      ) : null}
+      <main className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
+        {!isArticle ? (
+          <div className="mb-8 flex items-center gap-3">
+            <Button variant="ghost" size="icon" asChild>
+              <Link href={backHref}>
+                <ArrowLeft className="h-5 w-5" />
+              </Link>
+            </Button>
+            <div>
+              <h1 className="text-2xl font-semibold text-foreground">{formConfig.title}</h1>
+              <p className="text-sm text-muted-foreground">{formConfig.description}</p>
+            </div>
+          </div>
+        ) : null}
 
-        <div className="rounded-3xl border border-border bg-card p-8 shadow-sm">
+        <div
+          className={
+            isArticle
+              ? `overflow-hidden rounded-[2rem] p-8 shadow-[0_28px_90px_rgba(69,38,20,0.1)] sm:p-10 ${editorialTheme.paperPanel}`
+              : "rounded-3xl border border-border bg-card p-8 shadow-sm"
+          }
+        >
           <div className="flex flex-wrap gap-2">
-            <Badge variant="secondary">{taskConfig.label}</Badge>
-            <Badge variant="outline">Local-only</Badge>
+            {isArticle ? (
+              <>
+                <span className={editorialTheme.badge}>{taskConfig.label}</span>
+                <span className="inline-flex items-center gap-2 rounded-full border border-[#d0bcaa] bg-white/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#6b5a4d]">
+                  Local only
+                </span>
+              </>
+            ) : (
+              <>
+                <Badge variant="secondary">{taskConfig.label}</Badge>
+                <Badge variant="outline">Local-only</Badge>
+              </>
+            )}
           </div>
 
           <div className="mt-6 grid gap-6">
             {formConfig.fields.map((field) => (
               <div key={field.key} className="grid gap-2">
-                <Label>
+                <Label className={isArticle ? "text-[#4a3b33]" : undefined}>
                   {field.label} {field.required ? <span className="text-red-500">*</span> : null}
                 </Label>
                 {field.type === "textarea" ? (
                   <Textarea
-                    rows={4}
+                    rows={field.key === "description" && isArticle ? 10 : 4}
                     placeholder={field.placeholder}
                     value={values[field.key] || ""}
                     onChange={(event) => updateValue(field.key, event.target.value)}
-                    className="border-2 border-slate-200 bg-white focus-visible:ring-2 focus-visible:ring-primary/30"
+                    className={fieldClass()}
                   />
                 ) : field.type === "category" ? (
                   <select
                     value={values[field.key] || ""}
                     onChange={(event) => updateValue(field.key, event.target.value)}
-                    className="h-11 rounded-lg border-2 border-slate-200 bg-white px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+                    className={fieldClass(
+                      "h-11 rounded-lg px-3 text-sm focus-visible:outline-none"
+                    )}
                   >
                     <option value="">Select category</option>
                     {CATEGORY_OPTIONS.map((option) => (
@@ -347,15 +396,19 @@ export default function CreateTaskPage() {
                         };
                         reader.readAsDataURL(file);
                       }}
+                      className={fieldClass()}
                     />
                     <Input
                       type="text"
                       placeholder="Or paste a PDF URL"
                       value={values[field.key] || ""}
                       onChange={(event) => updateValue(field.key, event.target.value)}
+                      className={fieldClass("h-11")}
                     />
                     {uploadingPdf ? (
-                      <p className="text-xs text-muted-foreground">Uploading PDF…</p>
+                      <p className={`text-xs ${isArticle ? "text-[#7b6456]" : "text-muted-foreground"}`}>
+                        Uploading PDF…
+                      </p>
                     ) : null}
                   </div>
                 ) : (
@@ -368,7 +421,7 @@ export default function CreateTaskPage() {
                     }
                     value={values[field.key] || ""}
                     onChange={(event) => updateValue(field.key, event.target.value)}
-                    className="h-11 border-2 border-slate-200 bg-white focus-visible:ring-2 focus-visible:ring-primary/30"
+                    className={fieldClass("h-11")}
                   />
                 )}
               </div>
@@ -376,11 +429,18 @@ export default function CreateTaskPage() {
           </div>
 
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button onClick={handleSubmit}>
+            <Button
+              onClick={handleSubmit}
+              className={isArticle ? `rounded-full px-6 font-semibold ${editorialTheme.copperButton}` : undefined}
+            >
               <Save className="mr-2 h-4 w-4" />
               Save locally
             </Button>
-            <Button variant="ghost" asChild>
+            <Button
+              variant="ghost"
+              asChild
+              className={isArticle ? `rounded-full border font-semibold ${editorialTheme.inkButton}` : undefined}
+            >
               <Link href={taskConfig.route}>
                 View {taskConfig.label}
                 <Plus className="ml-2 h-4 w-4" />
@@ -389,6 +449,7 @@ export default function CreateTaskPage() {
           </div>
         </div>
       </main>
+      {isArticle ? <Footer /> : null}
     </div>
   );
 }
