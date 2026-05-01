@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight, Building2, FileText, Image as ImageIcon, LayoutGrid, Tag, User } from 'lucide-react'
+import { ArrowRight, Building2, FileText, Image as ImageIcon, LayoutGrid, PenLine, Tag, User } from 'lucide-react'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
 import { TaskListClient } from '@/components/tasks/task-list-client'
@@ -10,6 +10,7 @@ import { CATEGORY_OPTIONS, normalizeCategory } from '@/lib/categories'
 import { taskIntroCopy } from '@/config/site.content'
 import { getFactoryState } from '@/design/factory/get-factory-state'
 import { TASK_LIST_PAGE_OVERRIDE_ENABLED, TaskListPageOverride } from '@/overrides/task-list-page'
+import { editorialTheme } from '@/overrides/editorial-ui'
 
 const taskIcons: Record<TaskKey, any> = {
   listing: Building2,
@@ -86,7 +87,7 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
         }
 
   return (
-    <div className={`min-h-screen ${shellClass}`}>
+    <div className={`min-h-screen ${task === 'article' ? 'bg-[linear-gradient(180deg,#17100f_0%,#241816_22%,#f6eee4_22.05%,#f6eee4_100%)]' : shellClass}`}>
       <NavbarShell />
       <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         {task === 'listing' ? (
@@ -147,23 +148,66 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
         ) : null}
 
         {layoutKey === 'article-editorial' || layoutKey === 'article-journal' ? (
-          <section className="mb-12 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
-            <div>
-              <p className={`text-xs uppercase tracking-[0.3em] ${ui.muted}`}>{taskConfig?.label || task}</p>
-              <h1 className="mt-3 max-w-4xl text-5xl font-semibold tracking-[-0.05em] text-foreground">{taskConfig?.description || 'Latest posts'}</h1>
-              <p className={`mt-5 max-w-2xl text-sm leading-8 ${ui.muted}`}>This reading surface uses slower pacing, stronger typographic hierarchy, and more breathing room so long-form content feels intentional rather than squeezed into a generic feed.</p>
+          <section className="mb-12 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
+            <div className={`rounded-[2rem] p-7 text-white sm:p-8 ${editorialTheme.darkPanel}`}>
+              <p className="text-[11px] uppercase tracking-[0.34em] text-[#c59b7e]">{taskConfig?.label || task}</p>
+              <h1 className="mt-4 max-w-4xl text-5xl font-semibold tracking-[-0.06em] text-[#fff2e2]">
+                Essays, analysis, and deliberate long-form reading in one editorial archive.
+              </h1>
+              <p className="mt-5 max-w-2xl text-sm leading-8 text-[#d5c1af]">
+                The article index behaves like a publication digest: stronger hierarchy, roomier modules, calmer pacing, and lighter support controls so the archive feels intentionally edited.
+              </p>
+              <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                {[
+                  ['Current issue', 'Lead stories rise above the grid'],
+                  ['Searchable archive', 'All routes stay URL-accessible'],
+                  ['Reading comfort', 'Warmer contrast and quieter framing'],
+                ].map(([label, value]) => (
+                  <div key={label} className="rounded-[1.3rem] border border-white/10 bg-white/[0.04] p-4">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#caab93]">{label}</p>
+                    <p className="mt-2 text-sm leading-7 text-[#f3e4d4]">{value}</p>
+                  </div>
+                ))}
+              </div>
+              {task === 'article' ? (
+                <div className="mt-6 flex flex-col gap-3 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
+                  <p className="text-xs leading-relaxed text-[#b8a08c]">
+                    Have a draft or a piece ready? Open the composer; after sign-in it saves in your browser only.
+                  </p>
+                  <Link
+                    href="/create/article"
+                    className={`inline-flex shrink-0 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold ${editorialTheme.copperButton}`}
+                  >
+                    <PenLine className="h-4 w-4" aria-hidden />
+                    Create article
+                  </Link>
+                </div>
+              ) : null}
             </div>
-            <div className={`rounded-[2rem] p-6 ${ui.panel}`}>
-              <p className={`text-xs font-semibold uppercase tracking-[0.24em] ${ui.muted}`}>Reading note</p>
-              <p className={`mt-4 text-sm leading-7 ${ui.muted}`}>Use category filters to jump between topics without collapsing the page into the same repeated card rhythm used by other task types.</p>
+
+            <div className={`rounded-[2rem] p-6 ${editorialTheme.paperPanel}`}>
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#8f6e5d]">Refine the archive</p>
+                {task === 'article' ? (
+                  <Link
+                    href="/create/article"
+                    className="text-sm font-semibold text-[#a06b45] underline-offset-4 transition hover:underline"
+                  >
+                    New article
+                  </Link>
+                ) : null}
+              </div>
+              <p className="mt-4 text-sm leading-7 text-[#745e51]">
+                Filter by category without flattening the page into a generic list. The archive stays article-first even when visitors narrow the topic.
+              </p>
               <form className="mt-5 flex items-center gap-3" action={taskConfig?.route || '#'}>
-                <select name="category" defaultValue={normalizedCategory} className={`h-11 flex-1 rounded-xl px-3 text-sm ${ui.input}`}>
+                <select name="category" defaultValue={normalizedCategory} className="h-11 flex-1 rounded-full border border-[#d9c5b0] bg-white px-4 text-sm text-[#241612]">
                   <option value="all">All categories</option>
                   {CATEGORY_OPTIONS.map((item) => (
                     <option key={item.slug} value={item.slug}>{item.name}</option>
                   ))}
                 </select>
-                <button type="submit" className={`h-11 rounded-xl px-4 text-sm font-medium ${ui.button}`}>Apply</button>
+                <button type="submit" className={`h-11 rounded-full px-5 text-sm font-medium ${editorialTheme.copperButton}`}>Apply</button>
               </form>
             </div>
           </section>
@@ -238,16 +282,18 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
         ) : null}
 
         {intro ? (
-          <section className={`mb-12 rounded-[2rem] p-6 shadow-[0_18px_50px_rgba(15,23,42,0.06)] sm:p-8 ${ui.panel}`}>
+          <section className={`mb-12 rounded-[2rem] p-6 sm:p-8 ${task === 'article' ? editorialTheme.paperPanel : `${ui.panel} shadow-[0_18px_50px_rgba(15,23,42,0.06)]`}`}>
             <h2 className="text-2xl font-semibold text-foreground">{intro.title}</h2>
             {intro.paragraphs.map((paragraph) => (
-              <p key={paragraph.slice(0, 40)} className={`mt-4 text-sm leading-7 ${ui.muted}`}>{paragraph}</p>
+              <p key={paragraph.slice(0, 40)} className={`mt-4 text-sm leading-8 ${task === 'article' ? 'text-[#745e51]' : ui.muted}`}>{paragraph}</p>
             ))}
-            <div className="mt-4 flex flex-wrap gap-4 text-sm">
-              {intro.links.map((link) => (
-                <a key={link.href} href={link.href} className="font-semibold text-foreground hover:underline">{link.label}</a>
-              ))}
-            </div>
+            {intro.links.length > 0 ? (
+              <div className="mt-5 flex flex-wrap gap-4 text-sm">
+                {intro.links.map((link) => (
+                  <a key={link.href} href={link.href} className="font-semibold text-foreground hover:underline">{link.label}</a>
+                ))}
+              </div>
+            ) : null}
           </section>
         ) : null}
 
