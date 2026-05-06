@@ -37,7 +37,6 @@ export function NavbarOverride() {
             </div>
             <div className="min-w-0">
               <span className="block truncate text-xl font-semibold tracking-[-0.03em] text-[#f7ebda]">{SITE_CONFIG.name}</span>
-              <span className="block text-[10px] uppercase tracking-[0.34em] text-[#b79680]">Journal edition</span>
             </div>
           </Link>
 
