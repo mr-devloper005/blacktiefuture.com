@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight, BookOpenText, Search, Sparkles } from 'lucide-react'
+import { ArrowRight, BookOpenText, Sparkles } from 'lucide-react'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
 import { SchemaJsonLd } from '@/components/seo/schema-jsonld'
@@ -7,7 +7,7 @@ import { ContentImage } from '@/components/shared/content-image'
 import { TaskPostCard } from '@/components/shared/task-post-card'
 import { fetchTaskPosts } from '@/lib/task-data'
 import { SITE_CONFIG } from '@/lib/site-config'
-import { editorialTheme, emphasizedTasks, formatPostDate, getPostAuthor, getPostCategory, getPostExcerpt, getPostImage, getReadingTime } from '@/overrides/editorial-ui'
+import { editorialTheme, emphasizedTasks, getPostAuthor, getPostCategory, getPostExcerpt, getPostImage, getReadingTime } from '@/overrides/editorial-ui'
 
 export const HOME_PAGE_OVERRIDE_ENABLED = true
 
@@ -76,25 +76,6 @@ export async function HomePageOverride() {
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
-
-              <form action="/search" method="GET" className="mt-6 flex w-full max-w-2xl flex-col gap-3 rounded-[1.6rem] border border-white/10 bg-white/[0.04] p-3 sm:flex-row sm:items-center">
-                <div className="flex min-w-0 flex-1 items-center gap-3 rounded-full bg-black/10 px-4 py-3">
-                  <Search className="h-4 w-4 text-[#d8c3af]" />
-                  <input
-                    name="q"
-                    type="search"
-                    placeholder="Search essays, people, and archive entries"
-                    className="min-w-0 flex-1 bg-transparent text-sm text-[#fff1e1] placeholder:text-[#c9ac95] outline-none"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className={`inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${editorialTheme.inkButton}`}
-                >
-                  Search the archive
-                  <Search className="h-4 w-4" />
-                </button>
-              </form>
 
               <div className="mt-10 grid gap-4 border-t border-white/10 pt-6 sm:grid-cols-3">
                 {[
@@ -165,7 +146,6 @@ export async function HomePageOverride() {
                     </h2>
                     <div className={`mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm ${editorialTheme.mutedLight}`}>
                       <span>{getPostAuthor(lead)}</span>
-                      {lead.publishedAt ? <span>{formatPostDate(lead.publishedAt)}</span> : null}
                       <span>{getReadingTime(lead)}</span>
                     </div>
                     <p className={`mt-6 max-w-2xl text-base leading-8 ${editorialTheme.mutedLight}`}>

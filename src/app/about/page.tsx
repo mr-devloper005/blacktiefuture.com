@@ -1,11 +1,9 @@
 import Link from "next/link";
-import { ArrowRight, BookOpenText, LibraryBig, PenSquare, Sparkles } from "lucide-react";
+import { BookOpenText, LibraryBig, PenSquare } from "lucide-react";
 import { PageShell } from "@/components/shared/page-shell";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { mockTeamMembers } from "@/data/mock-data";
 import { SITE_CONFIG } from "@/lib/site-config";
 import { editorialTheme } from "@/overrides/editorial-ui";
 
@@ -92,40 +90,6 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <div className="mt-12 flex items-end justify-between gap-4">
-        <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#9c6b4b]">Editorial team</p>
-          <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-[#241612]">The people shaping the tone, cadence, and archive.</h2>
-        </div>
-        <Link href="/contact" className="inline-flex items-center gap-2 text-sm font-semibold text-[#8f5837] hover:text-[#241612]">
-          Start a conversation
-          <ArrowRight className="h-4 w-4" />
-        </Link>
-      </div>
-
-      <div className="mt-6 grid gap-6 md:grid-cols-3">
-        {mockTeamMembers.map((member) => (
-          <Card key={member.id} className={`transition-transform hover:-translate-y-1 ${editorialTheme.paperPanel}`}>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3">
-                <Avatar className="h-12 w-12">
-                  <AvatarImage src={member.avatar} alt={member.name} />
-                  <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="text-sm font-semibold text-foreground">{member.name}</p>
-                  <p className="text-xs uppercase tracking-[0.16em] text-[#8d6e5d]">{member.role}</p>
-                </div>
-              </div>
-              <p className="mt-3 text-sm leading-7 text-[#715a4c]">{member.bio}</p>
-              <p className="mt-3 flex items-center gap-2 text-xs text-[#8d6e5d]">
-                <Sparkles className="h-3.5 w-3.5" />
-                {member.location}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
     </PageShell>
   );
 }

@@ -161,13 +161,6 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
     (typeof content.author === "string" && content.author.trim()) ||
     post.authorName ||
     "Editorial Team";
-  const articleDate = post.publishedAt
-    ? new Date(post.publishedAt).toLocaleDateString("en-IN", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-    : "";
   const postTags = Array.isArray(post.tags) ? post.tags.filter((tag) => typeof tag === "string") : [];
   const location = content.address || content.location;
   const images = getImageUrls(post, content);
@@ -286,7 +279,6 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
                   </h1>
                   <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-[#d4bca9]">
                     <span>By {articleAuthor}</span>
-                    {articleDate ? <span>{articleDate}</span> : null}
                   </div>
                   {postTags.length ? (
                     <div className="mt-5 flex flex-wrap gap-2">
@@ -318,7 +310,6 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
                 <div className={`rounded-[2rem] p-6 sm:p-8 ${editorialTheme.paperPanel}`}>
                   <div className="mb-6 flex flex-wrap items-center gap-3 text-sm text-[#765e50]">
                     <span className="font-medium">{articleAuthor}</span>
-                    {articleDate ? <span>{articleDate}</span> : null}
                     <Badge variant="secondary" className="inline-flex items-center gap-1 rounded-full border-0 bg-[#f3e5d7] text-[#7c4f36] shadow-none">
                       <Tag className="h-3.5 w-3.5" />
                       {category}
