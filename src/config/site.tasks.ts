@@ -15,10 +15,10 @@ export const siteTaskDefinitions = [
     contentType: 'classified',
     enabled: false,
   },
-  {
+{
   key: 'article',
   label: 'Article',
-  route: '/article',
+  route: '/articles',
   description: 'Curated article content.',
   contentType: 'article',
   enabled: true,
@@ -76,7 +76,7 @@ export const siteTaskDefinitions = [
 export const siteTaskViews = {
   listing: '/listing',
   classified: '/classified',
-  article: '/article',
+  article: '/articles',
   image: '/image',
   profile: '/profile',
   social: '/community',

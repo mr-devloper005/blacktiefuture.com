@@ -2,24 +2,15 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import { ChevronRight, Menu, Search, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { SITE_CONFIG } from '@/lib/site-config'
-import { archiveTasks, editorialTheme, emphasizedTasks } from '@/overrides/editorial-ui'
+import { archiveTasks, editorialTheme } from '@/overrides/editorial-ui'
 
 export const NAVBAR_OVERRIDE_ENABLED = true
 
 export function NavbarOverride() {
-  const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
-  const primaryTask = emphasizedTasks[0]
-
-  const primaryLinks = [
-    { label: 'Home', href: '/' },
-    { label: primaryTask?.label || 'Articles', href: primaryTask?.route || '/articles' },
-    { label: 'Search', href: '/search' },
-  ]
 
   return (
     <header className={`sticky top-0 z-50 w-full ${editorialTheme.masthead}`}>
@@ -40,24 +31,6 @@ export function NavbarOverride() {
             </div>
           </Link>
 
-          <nav className="hidden items-center gap-2 lg:flex">
-            {primaryLinks.map((item) => {
-              const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={
-                    isActive
-                      ? 'rounded-full bg-[rgba(217,144,87,0.16)] px-4 py-2 text-sm font-semibold text-[#ffe7d2]'
-                      : 'rounded-full px-4 py-2 text-sm font-semibold text-[#c8b09f] transition hover:bg-white/6 hover:text-[#fff2e2]'
-                  }
-                >
-                  {item.label}
-                </Link>
-              )
-            })}
-          </nav>
         </div>
 
         <div className="hidden items-center gap-3 lg:flex">
@@ -118,26 +91,6 @@ export function NavbarOverride() {
                 Go
               </button>
             </form>
-            <div className="grid gap-3">
-              {primaryLinks.map((item) => {
-                const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setIsOpen(false)}
-                    className={
-                      isActive
-                        ? 'rounded-[1.2rem] border border-[rgba(217,144,87,0.24)] bg-[rgba(217,144,87,0.12)] px-4 py-3 text-sm font-semibold text-[#ffe7d2]'
-                        : 'rounded-[1.2rem] border border-white/8 bg-white/[0.04] px-4 py-3 text-sm font-semibold text-[#d8c4b3]'
-                    }
-                  >
-                    {item.label}
-                  </Link>
-                )
-              })}
-            </div>
-
             <div className="mt-5 rounded-[1.4rem] border border-white/8 bg-white/[0.04] p-4">
               <p className="text-[11px] font-semibold uppercase tracking-[0.26em] text-[#b79680]">Archive routes</p>
               <div className="mt-3 flex flex-wrap gap-2">
