@@ -1,13 +1,12 @@
 import Link from 'next/link'
-import { ArrowRight, BookOpenText, Sparkles } from 'lucide-react'
+import { ArrowRight, BookOpenText } from 'lucide-react'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
 import { SchemaJsonLd } from '@/components/seo/schema-jsonld'
 import { ContentImage } from '@/components/shared/content-image'
-import { TaskPostCard } from '@/components/shared/task-post-card'
 import { fetchTaskPosts } from '@/lib/task-data'
 import { SITE_CONFIG } from '@/lib/site-config'
-import { editorialTheme, emphasizedTasks, getPostAuthor, getPostCategory, getPostExcerpt, getPostImage, getReadingTime } from '@/overrides/editorial-ui'
+import { editorialTheme, getPostAuthor, getPostCategory, getPostExcerpt, getPostImage, getReadingTime } from '@/overrides/editorial-ui'
 
 export const HOME_PAGE_OVERRIDE_ENABLED = true
 
@@ -15,7 +14,6 @@ export async function HomePageOverride() {
   const articlePosts = await fetchTaskPosts('article', 7, { fresh: true })
   const lead = articlePosts[0]
   const features = articlePosts.slice(1, 4)
-  const digest = articlePosts.slice(4, 7)
 
   const schemaData = [
     {
@@ -48,21 +46,8 @@ export async function HomePageOverride() {
         <section className="mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-6 lg:px-8 lg:pb-24 lg:pt-10">
           <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
             <div className={`overflow-hidden rounded-[2rem] p-6 text-white sm:p-8 lg:p-10 ${editorialTheme.darkPanel}`}>
-              <div className="flex flex-wrap items-center gap-3">
-                <span className={editorialTheme.badge}>
-                  <Sparkles className="h-3.5 w-3.5" />
-                  Black Tie Journal
-                </span>
-                <span className="rounded-full border border-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#d8c3af]">
-                  {emphasizedTasks[0]?.label || 'Articles'} first
-                </span>
-              </div>
-
               <div className="mt-8 max-w-4xl">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.36em] text-[#c9ac95]">
-                  Independent publication
-                </p>
-                <h1 className={`mt-4 text-5xl font-semibold tracking-[-0.06em] sm:text-6xl ${editorialTheme.titleDark}`}>
+                <h1 className={`text-5xl font-semibold tracking-[-0.06em] sm:text-6xl ${editorialTheme.titleDark}`}>
                   Write with heat. Publish with taste. Read without the clutter.
                 </h1>
                 <p className={`mt-6 max-w-2xl text-base leading-8 ${editorialTheme.mutedDark}`}>
@@ -168,28 +153,6 @@ export async function HomePageOverride() {
           ) : null}
         </section>
 
-        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr]">
-            <div>
-              <h2 className={`mt-5 text-4xl font-semibold tracking-[-0.05em] ${editorialTheme.titleLight}`}>
-                The homepage spotlights articles, while the wider system stays quietly accessible.
-              </h2>
-              <p className={`mt-5 max-w-xl text-sm leading-8 ${editorialTheme.mutedLight}`}>
-                Article publishing remains the primary discovery surface. Search, archive links, and direct routes keep every supported task reachable without turning the homepage into a cluttered multi-product grid.
-              </p>
-            </div>
-
-            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {digest.length ? digest.map((post) => (
-                <TaskPostCard key={post.id} post={post} href={`/articles/${post.slug}`} taskKey="article" />
-              )) : (
-                <div className={`col-span-full rounded-[1.8rem] p-8 ${editorialTheme.paperPanel}`}>
-                  <p className={`text-sm leading-7 ${editorialTheme.mutedLight}`}>New article cards will populate here automatically from the existing feed.</p>
-                </div>
-              )}
-            </div>
-          </div>
-        </section>
       </main>
 
       <Footer />
