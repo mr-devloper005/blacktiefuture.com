@@ -7,12 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import { SITE_CONFIG } from "@/lib/site-config";
 import { editorialTheme } from "@/overrides/editorial-ui";
 
-const highlights = [
-  { label: "Essays published", value: "12k+" },
-  { label: "Archive readers", value: "180k" },
-  { label: "Issue notes kept live", value: "8.6k" },
-];
-
 const values = [
   { title: "Edited with intention", description: "Pieces should feel selected, paced, and framed like a publication rather than dropped into a generic feed." },
   { title: "Built for reading comfort", description: "Typography, whitespace, and hierarchy are treated as part of the product, not decorative extras." },
@@ -26,9 +20,6 @@ export default function AboutPage() {
       description={`${SITE_CONFIG.name} is an independent editorial journal built for essays, commentary, and a slower archive-driven reading experience.`}
       actions={
         <>
-          <Button variant="outline" asChild className="rounded-full border-[#d7c2ac] bg-[rgba(255,251,245,0.82)] text-[#241612] hover:bg-[#fbf1e6]">
-            <Link href="/team">Meet the Team</Link>
-          </Button>
           <Button asChild className={`rounded-full ${editorialTheme.copperButton}`}>
             <Link href="/contact">Contact Us</Link>
           </Button>
@@ -48,14 +39,6 @@ export default function AboutPage() {
             <p className="text-sm leading-8 text-[#715a4c]">
               The underlying system still supports the broader route set, but the product now behaves like a distinct editorial journal: current stories up front, archive access close by, and supporting surfaces kept secondary unless a reader actively goes looking for them.
             </p>
-            <div className="grid gap-4 sm:grid-cols-3">
-              {highlights.map((item) => (
-                <div key={item.label} className="rounded-[1.4rem] border border-[#dec8b2] bg-[#fbf2e8] p-4">
-                  <div className="text-2xl font-semibold text-foreground">{item.value}</div>
-                  <div className="mt-1 text-xs uppercase tracking-[0.18em] text-[#8d6e5d]">{item.label}</div>
-                </div>
-              ))}
-            </div>
           </CardContent>
         </Card>
 
